@@ -73,7 +73,7 @@ main_game #(
     .score(score)
 );
 
-binary_to_seven_segment b2s_inst (
+b2s b2s_inst (
     .clk(clk),
     .binary_in(score),
     .segment_A(w_segment_A),

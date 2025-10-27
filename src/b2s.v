@@ -1,4 +1,4 @@
-module binary_to_seven_segment (
+module b2s (
     input   clk,
     input   [3:0] binary_in,
     output  segment_A;
@@ -41,5 +41,5 @@ module binary_to_seven_segment (
     assign segment_E = seg_out[2];
     assign segment_F = seg_out[1];
     assign segment_G = seg_out[0];
-    
+
 endmodule
