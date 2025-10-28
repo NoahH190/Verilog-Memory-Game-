@@ -58,7 +58,7 @@ debounce #(
 );
 
 main_game #(
-    .game_limt(game_limt),
+    .game_limit(game_limit),
     .clk_freq(clk_freq)
 ) game_inst (
     .clk(clk),
