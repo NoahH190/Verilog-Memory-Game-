@@ -21,7 +21,7 @@ reg  r_toggle, r_button_dv;
 wire [21:0] lfsr_data;
 reg  [$clog2(game_limit) - 1:0];
 reg  r_button_id;
-wire w_count_en, w_toggle;
+wire w_count_en, w_toggle; 
 
 localparam start        = 3'd0;
 localparam pattern_off  = 3'd1;
@@ -31,5 +31,19 @@ localparam incr_score   = 3'd4;
 localparam loser        = 3'd5;
 localparam winnner      = 3'd6;
 
-
+always @(posedge clk) begin
+    if(sw1 & sw2) 
+        r_sm_main <= start;
+    else begin 
+        case (r_sm_main)
+            start:         //reset cleared -> pattern off
+            pattern_off:   //timeout -> pattern show, 
+            pattern_show:  // if pattern completed -> pattern off, else, -> wait player  
+            wait_player:   //incorect pattern -> loser, correct not complete -> wait player, pattern complete -> incr score
+            incr_score:    //score not at limit -> pattern off, game over -> winner
+            loser:
+            winner:
+        endcase 
+    end
+end
 
