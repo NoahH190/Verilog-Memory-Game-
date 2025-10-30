@@ -19,7 +19,7 @@ reg  rsw1, rsw2, rsw3, rsw4;
 reg  [1:0] pattern [0:10];
 reg  r_toggle, r_button_dv;
 wire [21:0] lfsr_data;
-reg  [$clog2(game_limit) - 1:0];
+reg  [$clog2(game_limit) - 1:0] r_index;
 reg  r_button_id;
 wire w_count_en, w_toggle; 
 
