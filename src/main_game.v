@@ -56,7 +56,7 @@ always @(posedge clk) begin
                         r_index <= 0;
                         r_sm_main <= wait_player; 
                     end 
-                    else() begin 
+                    else begin 
                         r_index <= r_index + 1; 
                         r_sm_main <= pattern off; 
                     end 
