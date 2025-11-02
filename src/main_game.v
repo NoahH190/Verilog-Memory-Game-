@@ -23,7 +23,7 @@ reg  [$clog2(game_limit) - 1:0] r_index;
 reg  r_button_id;
 wire w_count_en, w_toggle; 
 
-localparam start        = 3'd0;
+localparam start        = 3'd0;     //bit encoding for the states
 localparam pattern_off  = 3'd1;
 localparam pattern_show = 3'd2;
 localparam wait_player  = 3'd3;
@@ -36,9 +36,32 @@ always @(posedge clk) begin
         r_sm_main <= start;
     else begin 
         case (r_sm_main)
-            start:         //reset cleared -> pattern off
+            start:           //reset cleared -> pattern off
+            begin 
+                if (!i_switch_1 & !i_switch_2 & r_button_dv) begin 
+                    score <= 0; 
+                    r_index <= 0; 
+                    r_sm_main <= pattern_off; 
+                end
+            end       
             pattern_off:   //timeout -> pattern show, 
+            begin
+                if (!w_toggle & r_toggle) // falling edge is detected, move onto next state
+                    r_sm_main <= pattern_show;  
+            end
             pattern_show:  // if pattern completed -> pattern off, else, -> wait player  
+            begin 
+                if(!w_toggle & r_toggle) begin 
+                    if(o_score == r_index) begin 
+                        r_index <= 0;
+                        r_sm_main <= wait_player; 
+                    end 
+                    else() begin 
+                        r_index <= r_index + 1; 
+                        r_sm_main <= pattern off; 
+                    end 
+                end 
+            end 
             wait_player:   //incorect pattern -> loser, correct not complete -> wait player, pattern complete -> incr score
             incr_score:    //score not at limit -> pattern off, game over -> winner
             loser:
