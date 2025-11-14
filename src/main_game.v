@@ -2,20 +2,20 @@ module main_game #(
     parameter clk_freq = 25000000,
     parameter game_limit = 6
 )(
-    input clk,
-    input sw1,
-    input sw2,
-    input sw3,
-    input sw4,
-    output d1,
-    output d2,
-    output d3,
-    output d4,
+    input i_clk,
+    input i_sw1,
+    input i_sw2,
+    input i_sw3,
+    input i_sw4,
+    output o_led_1,
+    output o_led_2,
+    output o_led_3,
+    output o_led_4,
     output reg [3:0] o_score
 );
 
 reg  [2:0] r_sm_main;
-reg  rsw1, rsw2, rsw3, rsw4;
+reg  r_sw1, r_sw2, r_sw3, r_sw4;
 reg  [1:0] r_pattern [0:10];
 reg  r_toggle, r_button_dv;
 wire [21:0] lfsr_data;
@@ -89,4 +89,25 @@ always @(posedge clk) begin
         endcase 
     end
 end
+
+always @(posedge i_clk) begin 
+    if (r_sm_main == start) begin //randomize "ish" pattern values 
+        r_pattern[0]  <= w_lfsr_data[1:0];
+        r_pattern[1]  <= w_lfsr_data[3:2];
+        r_pattern[2]  <= w_lfsr_data[5:4];
+        r_pattern[3]  <= w_lfsr_data[7:6];
+        r_pattern[4]  <= w_lfsr_data[9:8];
+        r_pattern[5]  <= w_lfsr_data[11:10];
+        r_pattern[6]  <= w_lfsr_data[13:12];
+        r_pattern[7]  <= w_lfsr_data[15:14];
+        r_pattern[8]  <= w_lfsr_data[17:16];
+        r_pattern[9]  <= w_lfsr_data[19:18];
+        r_pattern[10] <= w_lfsr_data[21:20];
+    end
+end
+
+assign o_led_1 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b00) ? 1'b1 : i_sw1;
+assign o_led_2 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b01) ? 1'b1 : i_sw2;
+assign o_led_3 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b10) ? 1'b1 : i_sw3;
+assign o_led_4 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b11) ? 1'b1 : i_sw4;
 
