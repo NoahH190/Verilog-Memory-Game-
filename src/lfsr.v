@@ -2,7 +2,7 @@ module lfsr(
     input i_clk,
     input i_rst,
     output [21:0] o_lfsr_data
-)
+);
 
 wire feedback = o_lfsr_data[21] ^ o_lfsr_data[20];
 
