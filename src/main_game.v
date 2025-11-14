@@ -106,8 +106,36 @@ always @(posedge i_clk) begin
     end
 end
 
-assign o_led_1 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b00) ? 1'b1 : i_sw1;
+assign o_led_1 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b00) ? 1'b1 : i_sw1; //if the game is in pattern show and the pattern index cooresponds to the pattern and index, assign o led out, otherwise only lights up if the switch is pressed 
 assign o_led_2 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b01) ? 1'b1 : i_sw2;
 assign o_led_3 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b10) ? 1'b1 : i_sw3;
 assign o_led_4 = (r_sm_main == pattern_show && r_pattern[r_index] == 2'b11) ? 1'b1 : i_sw4;
 
+always @(posedge i_clk) begin 
+    r_toggle <= w_toggle;
+    r_sw1 <= i_sw1; // register each switch in order to detect the fallign edge being released 
+    r_sw2 <= i_sw2; 
+    r_sw3 <= i_sw3; 
+    r_sw4 <= i_sw4;
+
+    if (r_sw1 && !i_sw1) begin 
+        r_button_dv <= 1'b1;  //Driving dv high signifies that a dwitrch has been pressed and released
+        r_button_id <= 0;
+    end
+    else if (r_sw2 && !i_sw2) begin
+        r_button_dv <= 1'b1;
+        r_button_id <= 1;
+    end
+    else if (r_sw3 && !i_sw3) begin
+        r_button_dv <= 1'b1;
+        r_button_id <= 2;
+    end
+    else if (r_sw4 && !i_sw4) begin
+        r_button_dv <= 1'b1;
+        r_button_id <= 3;
+    end
+    else begin
+        r_button_dv <= 1'b0;
+        r_button_id <= 0;
+    end
+end 
