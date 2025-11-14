@@ -76,15 +76,16 @@ always @(posedge clk) begin
             end
             incr_score:  //score not at limit -> pattern off, game over -> winner
             begin
-                o_score < o_score  + 1;
+                o_score < o_score  + 1;  //increment score, go back if game has not been won yet, go to winner state if it has been won. 
                 if(o_score == game_limit - 1)
                     if(o_score == game_limit)
                         r_sm_main <= winner;
                     else
                         r_sm_main <= pattern_off;
             end
-            loser:
-            winner:
+            loser: o_score <= 4'hF;
+            winner: o_score <= 4'hF;
+            default: r_sm_main <= start;
         endcase 
     end
 end
