@@ -139,3 +139,21 @@ always @(posedge i_clk) begin
         r_button_id <= 0;
     end
 end 
+
+assign w_count_en = (r_sm_main == pattern_show || r_sm_main == pattern_off);
+
+count_and_toggle #(.count_limit(clks_per_sec/4)) count_inst
+(
+    .i_clk(i_clk),
+    .i_enable(w_count_en),
+    .o_toggle(w_toggle)
+);
+
+lfsr lfsr_isnt
+(
+    .i_clk(i_clk),
+    .i_rst(),
+    .o_lfsr_data(lfsr_data)
+);
+
+endmodule
