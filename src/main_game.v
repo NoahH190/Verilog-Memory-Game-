@@ -29,16 +29,16 @@ localparam pattern_show = 3'd2;
 localparam wait_player  = 3'd3;
 localparam incr_score   = 3'd4;
 localparam loser        = 3'd5;
-localparam winnner      = 3'd6;
+localparam winner      = 3'd6;
 
-always @(posedge clk) begin
-    if(sw1 & sw2) 
+always @(posedge i_clk) begin
+    if(i_sw1 & i_sw2) 
         r_sm_main <= start;
     else begin 
         case (r_sm_main)
             start:           //reset cleared -> pattern off
             begin 
-                if (!i_switch_1 & !i_switch_2 & r_button_dv) begin 
+                if (!i_sw1 & !i_sw2 & r_button_dv) begin 
                     o_score <= 0; 
                     r_index <= 0; 
                     r_sm_main <= pattern_off; 
@@ -58,25 +58,25 @@ always @(posedge clk) begin
                     end 
                     else begin 
                         r_index <= r_index + 1; 
-                        r_sm_main <= pattern off; 
+                        r_sm_main <= pattern_off; 
                     end 
                 end 
             end 
             wait_player:  //incorect pattern -> loser, correct not complete -> wait player, pattern complete -> incr score
             begin
                 if(r_button_dv)   //Indicates player has pressed and released a switch 
-                    if(r_pattern[r_index] == r_Button _ID && r_index == o_score) begin //Checks if button is corret and we are at the end of the pattern
+                    if(r_pattern[r_index] == r_button _id && r_index == o_score) begin //Checks if button is correct and we are at the end of the pattern
                             r_index <= 0; 
-                            r_sm_main <= o_score; 
+                            r_sm_main <= incr_score; 
                         end 
-                    else if (r_pattern[r_index] != r_button_ID) //Checks if button that was pressed is supposed to be pressed
+                    else if (r_pattern[r_index] != r_button_id) //Checks if button that was pressed is supposed to be pressed
                         r_sm_main <= loser; 
                     else
                         r_index <= r_index + 1; 
             end
             incr_score:  //score not at limit -> pattern off, game over -> winner
             begin
-                o_score < o_score  + 1;  //increment score, go back if game has not been won yet, go to winner state if it has been won. 
+                o_score <= o_score  + 1;  //increment score, go back if game has not been won yet, go to winner state if it has been won. 
                 if(o_score == game_limit - 1)
                     if(o_score == game_limit)
                         r_sm_main <= winner;
@@ -92,17 +92,17 @@ end
 
 always @(posedge i_clk) begin 
     if (r_sm_main == start) begin //randomize "ish" pattern values 
-        r_pattern[0]  <= w_lfsr_data[1:0];
-        r_pattern[1]  <= w_lfsr_data[3:2];
-        r_pattern[2]  <= w_lfsr_data[5:4];
-        r_pattern[3]  <= w_lfsr_data[7:6];
-        r_pattern[4]  <= w_lfsr_data[9:8];
-        r_pattern[5]  <= w_lfsr_data[11:10];
-        r_pattern[6]  <= w_lfsr_data[13:12];
-        r_pattern[7]  <= w_lfsr_data[15:14];
-        r_pattern[8]  <= w_lfsr_data[17:16];
-        r_pattern[9]  <= w_lfsr_data[19:18];
-        r_pattern[10] <= w_lfsr_data[21:20];
+        r_pattern[0]  <= lfsr_data[1:0];
+        r_pattern[1]  <= lfsr_data[3:2];
+        r_pattern[2]  <= lfsr_data[5:4];
+        r_pattern[3]  <= lfsr_data[7:6];
+        r_pattern[4]  <= lfsr_data[9:8];
+        r_pattern[5]  <= lfsr_data[11:10];
+        r_pattern[6]  <= lfsr_data[13:12];
+        r_pattern[7]  <= lfsr_data[15:14];
+        r_pattern[8]  <= lfsr_data[17:16];
+        r_pattern[9]  <= lfsr_data[19:18];
+        r_pattern[10] <= lfsr_data[21:20];
     end
 end
 

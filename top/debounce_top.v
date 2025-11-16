@@ -1,15 +1,13 @@
 module debounce_top (
-    input  clk,
+    input  i_clk,
     input  sw_in,
     output sw_out
 );
 
-wire sw_out;
-
 debounce #(
     .debounce_filter(250000) // Adjust the filter value as needed
 ) debouncer (
-    .clk(clk),
+    .i_clk(i_clk),
     .sw_in(sw_in),
     .sw_out(sw_out)
 );

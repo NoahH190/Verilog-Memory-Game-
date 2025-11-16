@@ -1,11 +1,11 @@
 module top(
-    input  clk,
-    input  sw1,
-    input  sw2,
-    input  sw3,
-    input  sw4,
-    output d1
-    output d2
+    input  i_clk,
+    input  i_sw1,
+    input  i_sw2,
+    input  i_sw3,
+    input  i_sw4,
+    output d1,
+    output d2,
     output d3,
     output d4,
     output segment_A,
@@ -17,7 +17,7 @@ module top(
     output segment_G
 );
 
-localparam game_limt = 7;
+localparam game_limit = 7;
 localparam clk_freq = 25000000; // 50 MHz
 localparam debounce_filter = 250000; // 0.5 MHz
 
@@ -61,15 +61,15 @@ main_game #(
     .game_limit(game_limit),
     .clk_freq(clk_freq)
 ) game_inst (
-    .clk(clk),
-    .sw1(wsw1),
-    .sw2(wsw2),
-    .sw3(wsw3),
-    .sw4(wsw4),
-    .d1(d1),
-    .d2(d2),
-    .d3(d3),
-    .d4(d4),
+    .i_clk(clk),
+    .i_sw1(wsw1),
+    .i_sw2(wsw2),
+    .i_sw3(wsw3),
+    .i_sw4(wsw4),
+    .o_led_1(o_led_1),
+    .o_led_2(o_led_2),
+    .o_led_3(o_led_3),
+    .o_led_4(o_led_4),
     .score(score)
 );
 

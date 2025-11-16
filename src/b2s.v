@@ -1,7 +1,7 @@
 module b2s (
-    input   clk,
+    input   i_clk,
     input   [3:0] binary_in,
-    output  segment_A;
+    output  segment_A,
     output  segment_B,
     output  segment_C,
     output  segment_D,
@@ -12,7 +12,7 @@ module b2s (
 
     reg  [6:0] seg_out;
 
-    always @(posedge clk) begin
+    always @(posedge i_clk) begin
         case (binary_in)
             4'b0000: seg_out = 7'b1111110; // 0
             4'b0001: seg_out = 7'b0110000; // 1

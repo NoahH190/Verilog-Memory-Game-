@@ -1,14 +1,14 @@
 module debounce #(
     parameter debounce_filter = 250000 // Default filter value
 ) (
-    input  clk,
+    input  i_clk,
     input  sw_in,
-    output reg sw_out
+    output sw_out
 );
 
 reg[$clog2(debounce_filter)-1:0] counter;
 reg r_state = 1'b0;
-always @(posedge clk) begin
+always @(posedge i_clk) begin
     if (sw_in !== r_state && counter < debounce_filter - 1) begin
         counter <= counter + 1;
     end else if (counter == debounce_filter - 1) begin
