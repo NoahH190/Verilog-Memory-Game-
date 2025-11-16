@@ -142,7 +142,7 @@ end
 
 assign w_count_en = (r_sm_main == pattern_show || r_sm_main == pattern_off);
 
-count_and_toggle #(.count_limit(clks_per_sec/4)) count_inst
+count_and_toggle #(.count_limit(clk_freq/4)) count_inst
 (
     .i_clk(i_clk),
     .i_enable(w_count_en),
