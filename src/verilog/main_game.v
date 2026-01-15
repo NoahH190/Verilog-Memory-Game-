@@ -20,7 +20,7 @@ reg  [1:0] r_pattern [0:10];
 reg  r_toggle, r_button_dv;
 wire [21:0] lfsr_data;
 reg  [$clog2(game_limit) - 1:0] r_index;
-reg  r_button_id;
+reg  [1:0]r_button_id;
 wire w_count_en, w_toggle; 
 
 localparam start        = 3'd0;     //bit encoding for the states
@@ -78,10 +78,9 @@ always @(posedge i_clk) begin
             begin
                 o_score <= o_score  + 1;  //increment score, go back if game has not been won yet, go to winner state if it has been won. 
                 if(o_score == game_limit - 1)
-                    if(o_score == game_limit)
-                        r_sm_main <= winner;
-                    else
-                        r_sm_main <= pattern_off;
+                    r_sm_main <= winner;
+                else
+                    r_sm_main <= pattern_off;
             end
             loser: o_score <= 4'hF;
             winner: o_score <= 4'hF;
